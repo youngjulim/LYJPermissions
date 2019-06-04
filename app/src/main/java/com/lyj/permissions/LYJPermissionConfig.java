@@ -19,7 +19,7 @@ public class LYJPermissionConfig extends Builder{
         if(permission != null){
             this.mPermissions = permission;
             for(String name : permission){
-                Log.e("YJ", " - > " + name);
+                Log.e("YJ", " ---> " + name);
             }
         }
     }
