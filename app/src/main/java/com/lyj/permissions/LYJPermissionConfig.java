@@ -18,11 +18,12 @@ public class LYJPermissionConfig{
         return permissionConfig;
     }
 
-    public void setContext(Context context){
+    public LYJPermissionConfig setContext(Context context){
         this.mContext = context;
+        return permissionConfig;
     }
 
-    public void requestPermission(String[] permission) {
+    public LYJPermissionConfig requestPermission(String[] permission) {
         if(permission != null){
             this.mPermissions = permission;
             for(String name : permission){
@@ -30,13 +31,15 @@ public class LYJPermissionConfig{
                 Log.e("YJ", " 1------> " + name);
             }
         }
+        return permissionConfig;
     }
 
-    public void setOnPermissionDelegate(PermissionDelegate delegate) {
+    public LYJPermissionConfig setOnPermissionDelegate(PermissionDelegate delegate) {
         this.mPermissionDelegate = delegate;
         for(String name : mPermissions){
             //
             Log.e("YJ", " 2------> " + name);
         }
+        return permissionConfig;
     }
 }
