@@ -14,7 +14,7 @@ public class LYJPermissionConfig extends Builder{
     }
 
     @Override
-    void requestPermission(String[] permission) {
+    public void requestPermission(String[] permission) {
         super.requestPermission(permission);
         if(permission != null){
             this.mPermissions = permission;
@@ -25,7 +25,7 @@ public class LYJPermissionConfig extends Builder{
     }
 
     @Override
-    void setOnPermissionDelegate(PermissionDelegate delegate) {
+    public void setOnPermissionDelegate(PermissionDelegate delegate) {
         super.setOnPermissionDelegate(delegate);
         this.mPermissionDelegate = delegate;
     }

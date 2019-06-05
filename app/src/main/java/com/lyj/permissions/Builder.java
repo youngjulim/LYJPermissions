@@ -6,7 +6,7 @@ public abstract class Builder {
      * 요청 퍼미션
      * @param permission
      */
-    void requestPermission(String[] permission){}
+    public void requestPermission(String[] permission){}
 
-    void setOnPermissionDelegate(PermissionDelegate delegate){}
+    public void setOnPermissionDelegate(PermissionDelegate delegate){}
 }
