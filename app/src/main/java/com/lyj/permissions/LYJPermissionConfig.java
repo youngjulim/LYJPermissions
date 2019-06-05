@@ -10,6 +10,7 @@ public class LYJPermissionConfig{
     private PermissionDelegate mPermissionDelegate;
     private String[] mPermissions;
     private int requestCode = 0;
+    private boolean isSystemOverlay = false;
 
     private static LYJPermissionConfig permissionConfig;
 
@@ -37,6 +38,12 @@ public class LYJPermissionConfig{
         return permissionConfig;
     }
 
+    public LYJPermissionConfig setSystemOverlay(boolean value){
+        this.isSystemOverlay = value;
+        return permissionConfig;
+    }
+
+
     public LYJPermissionConfig setOnPermissionDelegate(PermissionDelegate delegate) {
         this.mPermissionDelegate = delegate;
         for(String name : mPermissions){
@@ -50,6 +57,7 @@ public class LYJPermissionConfig{
         Intent intent = new Intent(mContext, LYJPermissionAct.class);
         intent.putExtra(LYJPermission.REQUEST_PERMISSIONS, mPermissions);
         intent.putExtra(LYJPermission.REQUEST_CODE, requestCode);
+        intent.putExtra(LYJPermission.REQUEST_SYSTEM_OVERLAY, isSystemOverlay);
         mContext.startActivity(intent);
     }
 
