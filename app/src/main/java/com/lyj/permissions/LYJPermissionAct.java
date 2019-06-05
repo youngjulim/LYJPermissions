@@ -9,6 +9,7 @@ import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.WindowManager;
 
 import java.util.ArrayList;
 
@@ -16,34 +17,63 @@ import java.util.ArrayList;
 @RequiresApi(api = Build.VERSION_CODES.M)
 public class LYJPermissionAct extends AppCompatActivity{
 
+    private int requestCode = 0;
+    // 사용자에게 요구 권한 목록
+    private String[] requestPermissions;
+    // 사용자가 거부한 권한 목록
+    private String[] rejectionPermissions;
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
+        overridePendingTransition(0, 0);
         super.onCreate(savedInstanceState);
-        Log.e("YJ", "12345667808018080880");
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+        Log.e("YJ", "1234566711199990000009808018080880");
+        GetConfig();
     }
 
-    private int requestCode = 9;
+    void GetConfig(){
+
+        this.requestCode = getIntent().getIntExtra(LYJPermission.REQUEST_CODE, 0);
+        this.requestPermissions = getIntent().getStringArrayExtra(LYJPermission.REQUEST_PERMISSIONS);
+        // 권한 요청
+        RequestPermission();
+    }
+
     /**
-     * 단일 권한요청
+     *  싱글/그룹 요청 권한 체크
+     */
+    void RequestPermission(){
+
+        String[] tempPermissions = this.requestPermissions;
+        boolean isPermissionCheck = tempPermissions.length > 1 ? checkPermissions(tempPermissions) : checkPermission(tempPermissions[0]);
+        if(isPermissionCheck) {
+            ActivityCompat.requestPermissions(this, tempPermissions, this.requestCode);
+        }
+    }
+
+    /**
+     * 단일 권한 체
      * @param permission
      */
-    public void checkPermission(String permission){
+    public boolean checkPermission(String permission){
 
         int granted = ActivityCompat.checkSelfPermission(this, permission);
-        // 권한 X
+        // 권한 체크
         if(granted != PackageManager.PERMISSION_GRANTED){
-            //권한 요청
-            ActivityCompat.requestPermissions(this, new String[]{permission}, requestCode);
+
+           return true;
         }
         Log.e("YJ", "Permission : " + permission);
+        return false;
     }
 
     /**
-     * 멀티 권한 요청
-
+     * 멀티 권한 체크
      * @param permissions
      */
-    public void checkPermissions(String[] permissions){
+    public boolean checkPermissions(String[] permissions){
 
         ArrayList<String> tempData = new ArrayList<>();
         for(int i = 0; i < permissions.length; i++){
@@ -55,19 +85,34 @@ public class LYJPermissionAct extends AppCompatActivity{
         // 허용하지 않은 권한이 있다면
         if(tempData.size() > 0){
 
-            String[] reqPermissions = new String[tempData.size()];
+            rejectionPermissions = new String[tempData.size()];
             for(int i = 0 ; i < tempData.size(); i++){
-                reqPermissions[i] = tempData.get(i);
+                rejectionPermissions[i] = tempData.get(i);
             }
-            // 권한을 요청
-            ActivityCompat.requestPermissions(this, reqPermissions, requestCode);
+            return true;
         }
+        return false;
     }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if(this.requestCode == requestCode){
+            if(permissions.length > 0){
+                boolean isGranted = true;
+                for(int i = 0; i < permissions.length; i++){
+                    if(grantResults[i] != PackageManager.PERMISSION_DENIED){
+                        isGranted = false;
+                    }
+                }
+                // 사용자가 권한을 허용했을 경우.
+                if(isGranted){
+                    LYJPermissionConfig.getInstance().getPermissionDelegate().permissionCompleted(permissions);
+                }else{
+                    // 사용자가 권한을 허용하지 않았을 경우.
+                    LYJPermissionConfig.getInstance().getPermissionDelegate().permissionFailed(permissions);
+                }
+            }
             finish();
         }
     }

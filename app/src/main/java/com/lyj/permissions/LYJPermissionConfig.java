@@ -9,6 +9,7 @@ public class LYJPermissionConfig{
     private Context mContext;
     private PermissionDelegate mPermissionDelegate;
     private String[] mPermissions;
+    private int requestCode = 0;
 
     private static LYJPermissionConfig permissionConfig;
 
@@ -24,9 +25,10 @@ public class LYJPermissionConfig{
         return permissionConfig;
     }
 
-    public LYJPermissionConfig requestPermission(String[] permission) {
+    public LYJPermissionConfig requestPermission(String[] permission, int reqCode) {
         if(permission != null){
             this.mPermissions = permission;
+            this.requestCode = reqCode;
             for(String name : permission){
                 //
                 Log.e("YJ", " 1------> " + name);
@@ -45,6 +47,13 @@ public class LYJPermissionConfig{
     }
 
     public void excute(){
-        mContext.startActivity(new Intent(mContext, LYJPermissionAct.class));
+        Intent intent = new Intent(mContext, LYJPermissionAct.class);
+        intent.putExtra(LYJPermission.REQUEST_PERMISSIONS, mPermissions);
+        intent.putExtra(LYJPermission.REQUEST_CODE, requestCode);
+        mContext.startActivity(intent);
+    }
+
+    public PermissionDelegate getPermissionDelegate(){
+        return mPermissionDelegate;
     }
 }
