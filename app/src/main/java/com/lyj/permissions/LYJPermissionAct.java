@@ -65,7 +65,7 @@ public class LYJPermissionAct extends AppCompatActivity{
 
            return true;
         }
-        Log.e("YJ", "Permission : " + permission);
+        Log.e("YJ", "Permission :: " + permission);
         return false;
     }
 
