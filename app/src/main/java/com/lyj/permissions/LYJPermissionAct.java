@@ -19,7 +19,7 @@ public class LYJPermissionAct extends AppCompatActivity{
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        Log.e("YJ", "1234566780808080880");
+        Log.e("YJ", "12345667808018080880");
     }
 
     private int requestCode = 9;
