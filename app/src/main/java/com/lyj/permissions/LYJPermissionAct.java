@@ -126,7 +126,7 @@ public class LYJPermissionAct extends AppCompatActivity{
                 }
             }
         }
-        finish();
+        if(!isSystemOverlay)finish();
     }
 
     @Override
