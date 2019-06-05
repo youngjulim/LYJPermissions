@@ -1,6 +1,7 @@
 package com.lyj.permissions;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 
 public class LYJPermissionConfig{
@@ -41,5 +42,9 @@ public class LYJPermissionConfig{
             Log.e("YJ", " 2------> " + name);
         }
         return permissionConfig;
+    }
+
+    public void excute(){
+        mContext.startActivity(new Intent(mContext, LYJPermissionAct.class));
     }
 }
