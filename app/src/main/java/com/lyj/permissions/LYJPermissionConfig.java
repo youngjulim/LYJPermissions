@@ -41,7 +41,7 @@ public class LYJPermissionConfig{
         this.mPermissionDelegate = delegate;
         for(String name : mPermissions){
             //
-            Log.e("YJ", " 2------> " + name);
+            Log.e("YJ", " 22------> " + name);
         }
         return permissionConfig;
     }
