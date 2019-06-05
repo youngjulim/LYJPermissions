@@ -48,8 +48,10 @@ public class LYJPermissionAct extends AppCompatActivity{
 
         String[] tempPermissions = this.requestPermissions;
         boolean isPermissionCheck = tempPermissions.length > 1 ? checkPermissions(tempPermissions) : checkPermission(tempPermissions[0]);
-        if(isPermissionCheck) {
+        if(isPermissionCheck) { // 권한 승인이 안된 상태.
             ActivityCompat.requestPermissions(this, tempPermissions, this.requestCode);
+        }else{ // 권한이 모드 승인된 상태
+            LYJPermissionConfig.getInstance().getPermissionDelegate().permissionCompleted(tempPermissions);
         }
     }
 
