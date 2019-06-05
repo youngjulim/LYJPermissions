@@ -31,7 +31,7 @@ public class LYJPermissionConfig{
             this.requestCode = reqCode;
             for(String name : permission){
                 //
-                Log.e("YJ", " 1------> " + name);
+                Log.e("YJ", " 11------> " + name);
             }
         }
         return permissionConfig;
