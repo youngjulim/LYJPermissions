@@ -1,14 +1,10 @@
 package com.lyj.permissions;
 
-import android.content.Context;
-
 public class LYJPermission {
 
-    public static LYJPermissionConfig baseContext(Context context){
+    public static LYJPermissionConfig getConfig(){
 
-        return new LYJPermissionConfig(context);
+        return LYJPermissionConfig.getInstance();
     }
-
-
 
 }
