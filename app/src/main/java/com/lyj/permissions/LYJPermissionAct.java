@@ -113,7 +113,7 @@ public class LYJPermissionAct extends AppCompatActivity{
                     LYJPermissionConfig.getInstance().getPermissionDelegate().permissionFailed(permissions);
                 }
             }
-            finish();
         }
+        finish();
     }
 }
