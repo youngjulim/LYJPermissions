@@ -101,7 +101,7 @@ public class LYJPermissionAct extends AppCompatActivity{
             if(permissions.length > 0){
                 boolean isGranted = true;
                 for(int i = 0; i < permissions.length; i++){
-                    if(grantResults[i] != PackageManager.PERMISSION_DENIED){
+                    if(grantResults[i] != PackageManager.PERMISSION_GRANTED){
                         isGranted = false;
                     }
                 }
