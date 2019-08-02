@@ -14,12 +14,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.WindowManager;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 
 @RequiresApi(api = Build.VERSION_CODES.M)
-public class LYJPermissionAct extends AppCompatActivity implements Serializable {
+public class LYJPermissionAct extends AppCompatActivity{
 
     private int requestCode = 0;
     private int REQUEST_CODE_SYSTEM_OVERLAY = 101;
@@ -53,7 +52,7 @@ public class LYJPermissionAct extends AppCompatActivity implements Serializable 
         if(isPermissionCheck) { // 권한 승인이 안된 상태.
             ActivityCompat.requestPermissions(this, tempPermissions, mConfig.getRequestCode());
         }else{ // 권한이 모드 승인된 상태
-            LYJPermission.mPermissionDelegate.permissionCompleted(tempPermissions);
+            mConfig.getDelegate().permissionCompleted(tempPermissions);
             finish();
         }
     }
@@ -116,11 +115,11 @@ public class LYJPermissionAct extends AppCompatActivity implements Serializable 
                     if(mConfig.isSystemOverlay()){
                         startOverlayWindowService();
                     }else{
-                        LYJPermission.mPermissionDelegate.permissionCompleted(permissions);
+                        mConfig.getDelegate().permissionCompleted(permissions);
                     }
                 }else{
                     // 사용자가 권한을 허용하지 않았을 경우.
-                    LYJPermission.mPermissionDelegate.permissionFailed(permissions);
+                    mConfig.getDelegate().permissionFailed(permissions);
                 }
             }
         }
@@ -132,9 +131,9 @@ public class LYJPermissionAct extends AppCompatActivity implements Serializable 
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_SYSTEM_OVERLAY){
             if(checkCanOverlay()){
-                LYJPermission.mPermissionDelegate.permissionCompleted(mConfig.getPermissions());
+                mConfig.getDelegate().permissionCompleted(mConfig.getPermissions());
             }else{
-                LYJPermission.mPermissionDelegate.permissionFailed(mConfig.getPermissions());
+                mConfig.getDelegate().permissionFailed(mConfig.getPermissions());
             }
         }
         finish();
