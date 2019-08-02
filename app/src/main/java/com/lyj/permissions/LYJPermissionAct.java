@@ -53,7 +53,7 @@ public class LYJPermissionAct extends AppCompatActivity implements Serializable 
         if(isPermissionCheck) { // 권한 승인이 안된 상태.
             ActivityCompat.requestPermissions(this, tempPermissions, mConfig.getRequestCode());
         }else{ // 권한이 모드 승인된 상태
-            mConfig.getDelegate().permissionCompleted(tempPermissions);
+            LYJPermission.mPermissionDelegate.permissionCompleted(tempPermissions);
             finish();
         }
     }
@@ -116,11 +116,11 @@ public class LYJPermissionAct extends AppCompatActivity implements Serializable 
                     if(mConfig.isSystemOverlay()){
                         startOverlayWindowService();
                     }else{
-                        mConfig.getDelegate().permissionCompleted(permissions);
+                        LYJPermission.mPermissionDelegate.permissionCompleted(permissions);
                     }
                 }else{
                     // 사용자가 권한을 허용하지 않았을 경우.
-                    mConfig.getDelegate().permissionFailed(permissions);
+                    LYJPermission.mPermissionDelegate.permissionFailed(permissions);
                 }
             }
         }
@@ -132,9 +132,9 @@ public class LYJPermissionAct extends AppCompatActivity implements Serializable 
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_SYSTEM_OVERLAY){
             if(checkCanOverlay()){
-                mConfig.getDelegate().permissionCompleted(mConfig.getPermissions());
+                LYJPermission.mPermissionDelegate.permissionCompleted(mConfig.getPermissions());
             }else{
-                mConfig.getDelegate().permissionFailed(mConfig.getPermissions());
+                LYJPermission.mPermissionDelegate.permissionFailed(mConfig.getPermissions());
             }
         }
         finish();

@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 public class LYJPermission {
 
     public static final String REQUEST_CODE = "req_code";
@@ -12,7 +14,7 @@ public class LYJPermission {
 
 
     private Context mContext;
-    private PermissionDelegate mPermissionDelegate;
+    public static  PermissionDelegate mPermissionDelegate;
     private String[] mPermissions;
     private int requestCode = 0;
     private boolean isSystemOverlay = false;
@@ -31,8 +33,11 @@ public class LYJPermission {
      * 퍼미션 요청 Activity으로 이동
      */
     private void goPermission(){
+        ArrayList<PermissionDelegate> permissionDelegateArrayList = new ArrayList<>();
+        permissionDelegateArrayList.add(mPermissionDelegate);
         Intent intent = new Intent(mContext, LYJPermissionAct.class);
-        intent.putExtra("config", new Config(mPermissions, isSystemOverlay, requestCode, mPermissionDelegate));
+        intent.getExtras().putSerializable("config", new Config(mPermissions, isSystemOverlay, requestCode));
+        //intent.getExtras().pintent.putExtra()
         mContext.startActivity(intent);
     }
 

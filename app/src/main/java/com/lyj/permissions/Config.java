@@ -6,7 +6,6 @@ import java.io.Serializable;
 
 public class Config implements Serializable {
 
-    private PermissionDelegate delegate;
     private String[] permissions;
     private int requestCode = 0;
     private boolean isSystemOverlay = false;
@@ -15,20 +14,14 @@ public class Config implements Serializable {
 
     public Config(){}
 
-    public Config(String[] permissions, boolean isSystemOverlay, int reqCode, PermissionDelegate delegate){
-      this.delegate = delegate;
+    public Config(String[] permissions, boolean isSystemOverlay, int reqCode){
+
       this.permissions = permissions;
       this.isSystemOverlay = isSystemOverlay;
       this.requestCode = reqCode;
     }
 
-    public PermissionDelegate getDelegate() {
-        return delegate;
-    }
 
-    public void setDelegate(PermissionDelegate delegate) {
-        this.delegate = delegate;
-    }
 
     public String[] getPermissions() {
         return permissions;
