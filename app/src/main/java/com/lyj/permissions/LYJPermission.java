@@ -36,8 +36,8 @@ public class LYJPermission {
         ArrayList<PermissionDelegate> permissionDelegateArrayList = new ArrayList<>();
         permissionDelegateArrayList.add(mPermissionDelegate);
         Intent intent = new Intent(mContext, LYJPermissionAct.class);
-        intent.getExtras().putSerializable("config", new Config(mPermissions, isSystemOverlay, requestCode, mPermissionDelegate));
-        //intent.getExtras().pintent.putExtra()
+        intent.putExtra("config", new Config(mPermissions, isSystemOverlay, requestCode, mPermissionDelegate));
+
         mContext.startActivity(intent);
     }
 
