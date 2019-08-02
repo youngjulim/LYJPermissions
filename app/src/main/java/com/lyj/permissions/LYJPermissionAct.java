@@ -22,12 +22,11 @@ public class LYJPermissionAct extends AppCompatActivity{
 
     private int requestCode = 0;
     private int REQUEST_CODE_SYSTEM_OVERLAY = 101;
-    // 사용자에게 요구 권한 목록
-    private String[] requestPermissions;
-    // 사용자가 거부한 권한 목록
+
     private String[] rejectionPermissions;
-    // 시스템 오버레이 권한 요청 유무
-    private boolean isSystemOverlay = false;
+
+
+    private Config mConfig;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         overridePendingTransition(0, 0);
@@ -38,9 +37,7 @@ public class LYJPermissionAct extends AppCompatActivity{
 
     void GetConfig(){
 
-        this.requestCode = getIntent().getIntExtra(LYJPermission.REQUEST_CODE, 0);
-        this.requestPermissions = getIntent().getStringArrayExtra(LYJPermission.REQUEST_PERMISSIONS);
-        this.isSystemOverlay =  getIntent().getBooleanExtra(LYJPermission.REQUEST_SYSTEM_OVERLAY, false);
+        this.mConfig = (Config) getIntent().getSerializableExtra("config");
         // 권한 요청
         RequestPermission();
     }
@@ -50,12 +47,12 @@ public class LYJPermissionAct extends AppCompatActivity{
      */
     void RequestPermission(){
 
-        String[] tempPermissions = this.requestPermissions;
+        String[] tempPermissions = mConfig.getPermissions();
         boolean isPermissionCheck = tempPermissions.length > 1 ? checkPermissions(tempPermissions) : checkPermission(tempPermissions[0]);
         if(isPermissionCheck) { // 권한 승인이 안된 상태.
-            ActivityCompat.requestPermissions(this, tempPermissions, this.requestCode);
+            ActivityCompat.requestPermissions(this, tempPermissions, mConfig.getRequestCode());
         }else{ // 권한이 모드 승인된 상태
-            LYJPermissionConfig.getInstance().getPermissionDelegate().permissionCompleted(tempPermissions);
+            mConfig.getDelegate().permissionCompleted(tempPermissions);
             finish();
         }
     }
@@ -115,18 +112,18 @@ public class LYJPermissionAct extends AppCompatActivity{
                 // 사용자가 권한을 허용했을 경우.
                 if(isGranted){
                     // 시스템 오버레이 권한 요청이 있다면
-                    if(isSystemOverlay){
+                    if(mConfig.isSystemOverlay()){
                         startOverlayWindowService();
                     }else{
-                        LYJPermissionConfig.getInstance().getPermissionDelegate().permissionCompleted(permissions);
+                        mConfig.getDelegate().permissionCompleted(permissions);
                     }
                 }else{
                     // 사용자가 권한을 허용하지 않았을 경우.
-                    LYJPermissionConfig.getInstance().getPermissionDelegate().permissionFailed(permissions);
+                    mConfig.getDelegate().permissionFailed(permissions);
                 }
             }
         }
-        if(!isSystemOverlay)finish();
+        if(!mConfig.isSystemOverlay())finish();
     }
 
     @Override
@@ -134,9 +131,9 @@ public class LYJPermissionAct extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_SYSTEM_OVERLAY){
             if(checkCanOverlay()){
-                LYJPermissionConfig.getInstance().getPermissionDelegate().permissionCompleted(requestPermissions);
+                mConfig.getDelegate().permissionCompleted(mConfig.getPermissions());
             }else{
-                LYJPermissionConfig.getInstance().getPermissionDelegate().permissionFailed(requestPermissions);
+                mConfig.getDelegate().permissionFailed(mConfig.getPermissions());
             }
         }
         finish();
