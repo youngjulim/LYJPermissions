@@ -13,6 +13,8 @@ public class Config implements Serializable {
 
     private PermissionDelegate permissionDelegate;
 
+    public Config(){}
+
     public Config(String[] permissions, boolean isSystemOverlay, int reqCode, PermissionDelegate delegate){
       this.delegate = delegate;
       this.permissions = permissions;

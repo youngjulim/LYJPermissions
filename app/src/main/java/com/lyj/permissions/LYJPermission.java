@@ -83,7 +83,7 @@ public class LYJPermission {
          * @param delegate
          * @return
          */
-        public Builder setOnPermissionDelegate(PermissionDelegate delegate) {
+        public Builder setOnPermissionDlegate(PermissionDelegate delegate) {
             this.mPermissionDelegate = delegate;
             return this;
         }
