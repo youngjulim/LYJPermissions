@@ -33,11 +33,8 @@ public class LYJPermission {
      * 퍼미션 요청 Activity으로 이동
      */
     private void goPermission(){
-        ArrayList<PermissionDelegate> permissionDelegateArrayList = new ArrayList<>();
-        permissionDelegateArrayList.add(mPermissionDelegate);
         Intent intent = new Intent(mContext, LYJPermissionAct.class);
-        intent.getExtras().putSerializable("config", new Config(mPermissions, isSystemOverlay, requestCode));
-        //intent.getExtras().pintent.putExtra()
+        intent.putExtra("config", new Config(mPermissions, isSystemOverlay, requestCode));
         mContext.startActivity(intent);
     }
 
