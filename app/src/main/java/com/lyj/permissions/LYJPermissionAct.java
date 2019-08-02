@@ -14,11 +14,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.WindowManager;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 
 @RequiresApi(api = Build.VERSION_CODES.M)
-public class LYJPermissionAct extends AppCompatActivity{
+public class LYJPermissionAct extends AppCompatActivity implements Serializable {
 
     private int requestCode = 0;
     private int REQUEST_CODE_SYSTEM_OVERLAY = 101;
