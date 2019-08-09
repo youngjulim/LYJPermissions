@@ -4,9 +4,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
-import java.util.ArrayList;
+import java.io.Serializable;
 
-public class LYJPermission {
+public class LYJPermission implements Serializable{
 
     public static final String REQUEST_CODE = "req_code";
     public static final String REQUEST_PERMISSIONS = "req_permission";
@@ -14,14 +14,16 @@ public class LYJPermission {
 
 
     private Context mContext;
-    public PermissionDelegate mPermissionDelegate;
-    private String[] mPermissions;
-    private int requestCode = 0;
-    private boolean isSystemOverlay = false;
+    protected PermissionDelegate mPermissionDelegate;
+    protected String[] mPermissions;
+    protected int requestCode = 0;
+    protected boolean isSystemOverlay = false;
+    protected Builder mBuilder;
 
     private LYJPermission(Builder builder){
 
         this.mContext = builder.context;
+        this.mBuilder = builder;
         this.mPermissionDelegate = builder.mPermissionDelegate;
         this.mPermissions = builder.permissionsList;
         this.requestCode = builder.requestCode;
@@ -29,15 +31,16 @@ public class LYJPermission {
         this.goPermission();
     }
 
+
+
+
     /**
      * 퍼미션 요청 Activity으로 이동
      */
     private void goPermission(){
-        ArrayList<PermissionDelegate> permissionDelegateArrayList = new ArrayList<>();
-        permissionDelegateArrayList.add(mPermissionDelegate);
-        Intent intent = new Intent(mContext, LYJPermissionAct.class);
-        intent.putExtra("config", new Config(mPermissions, isSystemOverlay, requestCode, mPermissionDelegate));
 
+        Intent intent = new Intent(mContext, LYJPermissionAct.class);
+        intent.putExtra("config", this);
         mContext.startActivity(intent);
     }
 
@@ -92,6 +95,7 @@ public class LYJPermission {
             this.mPermissionDelegate = delegate;
             return this;
         }
+
 
         public LYJPermission build(){
             return new LYJPermission(this);
