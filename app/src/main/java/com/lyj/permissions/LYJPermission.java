@@ -39,10 +39,11 @@ public class LYJPermission implements Serializable {
      */
     public void requestExec(){
 
-        if(this.permissionStacks == null){
-            this.permissionStacks = new ArrayDeque<>();
+        if(permissionStacks == null){
+            permissionStacks = new ArrayDeque<>();
         }
-        this.permissionStacks.push(mPermissionDelegate);
+        permissionStacks.push(mPermissionDelegate);
+
 
         Intent intent = new Intent(mContext, LYJPermissionAct.class);
         intent.putExtra("config", new Config(mPermissions, isSystemOverlay, requestCode));
