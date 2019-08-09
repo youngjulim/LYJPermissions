@@ -130,7 +130,9 @@ public class LYJPermissionAct extends AppCompatActivity{
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        Log.e("YJ", "reqeust!!!00000000030303030!!");
         if(this.requestCode == requestCode){
+            Log.e("YJ", "reqeust!!!!!");
             if(permissions.length > 0){
                 boolean isGranted = true;
                 for(int i = 0; i < permissions.length; i++){
