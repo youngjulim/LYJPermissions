@@ -24,11 +24,15 @@ public class LYJPermissionAct extends AppCompatActivity{
     private int requestCode = 0;
     private int REQUEST_CODE_SYSTEM_OVERLAY = 101;
 
+    // 요청 퍼미션 리스트
     private String[] rejectionPermissions;
+
+    // 콜백 인터페이스
     private PermissionDelegate permissionDelegate;
 
+    // 설정정보
+    private Config mConfig;
 
-    private LYJPermission mConfig;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         overridePendingTransition(0, 0);
@@ -61,7 +65,7 @@ public class LYJPermissionAct extends AppCompatActivity{
      */
     void GetConfig(){
 
-        this.mConfig = (LYJPermission) getIntent().getSerializableExtra("config");
+        this.mConfig = (Config) getIntent().getSerializableExtra("config");
         // 권한 요청
         RequestPermission();
     }
@@ -71,10 +75,10 @@ public class LYJPermissionAct extends AppCompatActivity{
      */
     void RequestPermission(){
 
-        String[] tempPermissions = this.mConfig.mPermissions;
+        String[] tempPermissions = this.mConfig.getPermissions();
         boolean isPermissionCheck = tempPermissions.length > 1 ? checkPermissions(tempPermissions) : checkPermission(tempPermissions[0]);
         if(isPermissionCheck) { // 권한 승인이 안된 상태.
-            ActivityCompat.requestPermissions(this, tempPermissions, mConfig.requestCode);
+            ActivityCompat.requestPermissions(this, tempPermissions, mConfig.getRequestCode());
         }else{ // 권한이 모드 승인된 상태
             permissionDelegate.permissionCompleted(tempPermissions);
             finish();
@@ -136,7 +140,7 @@ public class LYJPermissionAct extends AppCompatActivity{
                 // 사용자가 권한을 허용했을 경우.
                 if(isGranted){
                     // 시스템 오버레이 권한 요청이 있다면
-                    if(this.mConfig.isSystemOverlay){
+                    if(this.mConfig.isSystemOverlay()){
                         startOverlayWindowService();
                     }else{
                         permissionDelegate.permissionCompleted(permissions);
@@ -147,7 +151,7 @@ public class LYJPermissionAct extends AppCompatActivity{
                 }
             }
         }
-        if(!mConfig.isSystemOverlay)finish();
+        if(!mConfig.isSystemOverlay())finish();
     }
 
     @Override
@@ -155,9 +159,9 @@ public class LYJPermissionAct extends AppCompatActivity{
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode == REQUEST_CODE_SYSTEM_OVERLAY){
             if(checkCanOverlay()){
-                permissionDelegate.permissionCompleted(mConfig.mPermissions);
+                permissionDelegate.permissionCompleted(mConfig.getPermissions());
             }else{
-                permissionDelegate.permissionFailed(mConfig.mPermissions);
+                permissionDelegate.permissionFailed(mConfig.getPermissions());
             }
         }
         finish();
