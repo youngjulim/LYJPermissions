@@ -35,8 +35,9 @@ public class LYJPermissionAct extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
         // 콜백 인터페이스 체크
-        if(LYJPermission.permissionStacks.pop() != null) {
-            permissionDelegate = LYJPermission.permissionStacks.pop();
+        if(LYJPermission.permissionStacks.size() > 0) {
+            Log.e("YJ", "");
+            permissionDelegate = LYJPermission.permissionStacks.getLast();
         }else{
             Toast.makeText(this, "권한 요청중 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
             finish();
@@ -44,7 +45,7 @@ public class LYJPermissionAct extends AppCompatActivity{
 
         GetConfig();
     }
-
+/*
     @Override
     protected void onDestroy(){
         super.onDestroy();
@@ -52,6 +53,8 @@ public class LYJPermissionAct extends AppCompatActivity{
             LYJPermission.permissionStacks = null;
         }
     }
+
+*/
 
     /**
      * 설정정보 얻기
