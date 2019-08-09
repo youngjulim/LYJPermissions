@@ -5,8 +5,12 @@ import android.content.Intent;
 import android.util.Log;
 
 import java.io.Serializable;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
-public class LYJPermission implements Serializable{
+public class LYJPermission implements Serializable {
+
+    public static Deque<PermissionDelegate> permissionStacks;
 
     public static final String REQUEST_CODE = "req_code";
     public static final String REQUEST_PERMISSIONS = "req_permission";
@@ -28,22 +32,22 @@ public class LYJPermission implements Serializable{
         this.mPermissions = builder.permissionsList;
         this.requestCode = builder.requestCode;
         this.isSystemOverlay = builder.isSystemOverlay;
-        this.goPermission();
     }
-
-
-
 
     /**
-     * 퍼미션 요청 Activity으로 이동
+     * 권한요청 실행
      */
-    private void goPermission(){
+    public void requestExec(){
+
+        if(this.permissionStacks == null){
+            this.permissionStacks = new ArrayDeque<>();
+        }
+        this.permissionStacks.push(mPermissionDelegate);
 
         Intent intent = new Intent(mContext, LYJPermissionAct.class);
-        intent.putExtra("config", this);
+        intent.putExtra("config", new Config(mPermissions, isSystemOverlay, requestCode));
         mContext.startActivity(intent);
     }
-
     /**
      * 빌더 패턴 클래스
      */
@@ -81,7 +85,7 @@ public class LYJPermission implements Serializable{
          * @param value
          * @return
          */
-        public Builder setSystemOverlay(boolean value){
+        public Builder isSystemOverlay(boolean value){
             this.isSystemOverlay = value;
             return this;
         }
