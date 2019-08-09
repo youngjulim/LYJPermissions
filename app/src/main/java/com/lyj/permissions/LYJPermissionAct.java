@@ -130,8 +130,7 @@ public class LYJPermissionAct extends AppCompatActivity{
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        Log.e("YJ", "reqeust!!!00000000030303030!!");
-        if(this.requestCode == requestCode){
+        if(this.mConfig.getRequestCode() == requestCode){
             Log.e("YJ", "reqeust!!!!!");
             if(permissions.length > 0){
                 boolean isGranted = true;
@@ -145,17 +144,13 @@ public class LYJPermissionAct extends AppCompatActivity{
                 }
                 // 사용자가 권한을 허용했을 경우.
                 if(isGranted){
-                    Log.e("YJ", "---------------1");
                     // 시스템 오버레이 권한 요청이 있다면
                     if(this.mConfig.isSystemOverlay()){
-                        Log.e("YJ", "---------------3");
                         startOverlayWindowService();
                     }else{
-                        Log.e("YJ", "---------------4");
                         permissionDelegate.permissionCompleted(permissions);
                     }
                 }else{
-                    Log.e("YJ", "---------------2");
                     // 사용자가 권한을 허용하지 않았을 경우.
                     permissionDelegate.permissionFailed(permissions);
                 }
