@@ -41,7 +41,8 @@ public class LYJPermissionAct extends AppCompatActivity{
         // 콜백 인터페이스 체크
         if(LYJPermission.permissionStacks.size() > 0) {
             Log.e("YJ", "");
-            permissionDelegate = LYJPermission.permissionStacks.getLast();
+            permissionDelegate = LYJPermission.permissionStacks.pop();
+            Log.e("YJ", "permission hash : " + permissionDelegate.hashCode());
         }else{
             Toast.makeText(this, "권한 요청중 문제가 발생했습니다.", Toast.LENGTH_SHORT).show();
             finish();
@@ -53,7 +54,7 @@ public class LYJPermissionAct extends AppCompatActivity{
     @Override
     protected void onDestroy(){
         super.onDestroy();
-        if( permissionDelegate != null ){
+        if( permissionDelegate != null ){ta
             LYJPermission.permissionStacks = null;
         }
     }
@@ -137,15 +138,22 @@ public class LYJPermissionAct extends AppCompatActivity{
                         isGranted = false;
                     }
                 }
+                if(permissionDelegate != null){
+                    Log.e("YJ", "permission hash : " + permissionDelegate.hashCode());
+                }
                 // 사용자가 권한을 허용했을 경우.
                 if(isGranted){
+                    Log.e("YJ", "---------------1");
                     // 시스템 오버레이 권한 요청이 있다면
                     if(this.mConfig.isSystemOverlay()){
+                        Log.e("YJ", "---------------3");
                         startOverlayWindowService();
                     }else{
+                        Log.e("YJ", "---------------4");
                         permissionDelegate.permissionCompleted(permissions);
                     }
                 }else{
+                    Log.e("YJ", "---------------2");
                     // 사용자가 권한을 허용하지 않았을 경우.
                     permissionDelegate.permissionFailed(permissions);
                 }
